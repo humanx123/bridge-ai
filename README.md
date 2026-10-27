@@ -4,7 +4,7 @@
 Un menú en la terminal para Windows (cmd y PowerShell), macOS, Linux y Android (Termux).</p>
 
 <p align="center">
-  <a href="https://github.com/ReserchLab/ia-cli/stargazers"><img src="https://img.shields.io/github/stars/ReserchLab/ia-cli?style=flat&color=ff2d2d&label=%E2%98%85%20estrellas" alt="Estrellas"></a>
+  <a href="https://github.com/humanx123/ia-puente/stargazers"><img src="https://img.shields.io/github/stars/humanx123/ia-puente?style=flat&color=ff2d2d&label=%E2%98%85%20estrellas" alt="Estrellas"></a>
   <img src="https://img.shields.io/badge/Windows%20%C2%B7%20macOS%20%C2%B7%20Linux%20%C2%B7%20Termux-111" alt="Sistemas">
   <img src="https://img.shields.io/badge/node-%E2%89%A5%2020.18-111" alt="Node 20.18+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/licencia-MIT-111" alt="MIT"></a>
@@ -46,8 +46,8 @@ Necesitas **[Node.js 20.18 o más nuevo](https://nodejs.org)** y **git**.
 ```bat
 winget install OpenJS.NodeJS.LTS
 winget install Git.Git
-git clone https://github.com/ReserchLab/ia-cli
-cd ia-cli
+git clone https://github.com/humanx123/ia-puente
+cd ia-puente
 instalar.cmd
 ```
 
@@ -56,8 +56,8 @@ Abre una ventana **nueva** de cmd o PowerShell y escribe `ia`. `instalar.cmd` a�
 ### Linux y macOS
 
 ```bash
-git clone https://github.com/ReserchLab/ia-cli
-cd ia-cli
+git clone https://github.com/humanx123/ia-puente
+cd ia-puente
 ./instalar.sh
 ia
 ```
@@ -68,8 +68,8 @@ ia
 
 ```bash
 pkg install nodejs-lts git
-git clone https://github.com/ReserchLab/ia-cli
-cd ia-cli && ./instalar.sh
+git clone https://github.com/humanx123/ia-puente
+cd ia-puente && ./instalar.sh
 ia
 ```
 
@@ -78,7 +78,7 @@ En Termux, compilar FreeLLMAPI puede pedir `pkg install python make clang`. Si f
 ### Con npm (cualquier sistema)
 
 ```bash
-npm install -g github:ReserchLab/ia-cli
+npm install -g github:humanx123/ia-puente
 ia
 ```
 
@@ -116,7 +116,7 @@ La configuración guarda tu clave unificada y la sesión del panel, y solo la pu
 
 ## Proyectos hermanos
 
-- **[laboratorio.ia](https://github.com/ReserchLab/lab-ia)**: chat, investigación científica verificada e imágenes con IA, en tu Cloudflare o en tu teléfono. [Pruébalo sin registrarte](https://lab-ia-demo.reserchlab.workers.dev).
+- **[laboratorio.ia](https://github.com/humanx123/lab-ia)**: chat, investigación científica verificada e imágenes con IA, en tu Cloudflare o en tu teléfono. [Pruébalo sin registrarte](https://lab-ia-demo.reserchlab.workers.dev).
 - **[FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi)**: el enrutador de modelos gratuitos que usa `ia` (proyecto independiente, licencia MIT).
 
 ## Apoya el proyecto

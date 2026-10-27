@@ -10,7 +10,7 @@ export const DONACIONES = [
   { id: 'usdc', nombre: 'USDC', red: 'red Arbitrum One · mínimo 5 USDC', direccion: '0xAC43f9b0E7F0ae6386cfC8ef6BFf62CE9c3006A1', uri: d => d },
 ];
 export const FIRMA = 'Hecho xhumanx & IA';
-export const REPO = 'https://github.com/ReserchLab/ia-cli';
+export const REPO = 'https://github.com/humanx123/ia-puente';
 
 function matriz(texto) {
   const q = qrcode(0, 'M');

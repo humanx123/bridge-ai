@@ -1,15 +1,15 @@
 {
-  "name": "ia-cli",
+  "name": "ia-puente",
   "version": "1.0.0",
-  "description": "Claude Code y Codex con modelos gratis a través de FreeLLMAPI: un menú en la terminal para Windows, macOS, Linux y Termux.",
+  "description": "Claude Code y Codex con modelos gratis a través de FreeLLMAPI: un puente en la terminal para Windows, macOS, Linux y Termux.",
   "type": "module",
   "bin": { "ia": "bin/ia.mjs" },
   "files": ["bin", "src", "lib", "ia", "ia.cmd", "instalar.sh", "instalar.cmd", "instalar.ps1"],
   "scripts": { "test": "node prueba.mjs" },
   "engines": { "node": ">=20.18" },
-  "repository": { "type": "git", "url": "git+https://github.com/ReserchLab/ia-cli.git" },
-  "homepage": "https://github.com/ReserchLab/ia-cli#readme",
-  "keywords": ["claude-code", "codex", "freellmapi", "cli", "llm", "gratis"],
-  "author": "ReserchLab (xhumanx & IA)",
+  "repository": { "type": "git", "url": "git+https://github.com/humanx123/ia-puente.git" },
+  "homepage": "https://github.com/humanx123/ia-puente#readme",
+  "keywords": ["claude-code", "codex", "freellmapi", "llm", "gratis", "cli"],
+  "author": "humanx123 (xhumanx & IA)",
   "license": "MIT"
 }
