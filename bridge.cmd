@@ -1,3 +1,3 @@
 @echo off
-rem Guarura para Windows (cmd y PowerShell).
-node "%~dp0bin\guarura.mjs" %*
+rem bridge‑ai para Windows (cmd y PowerShell).
+node "%~dp0bin\bridge-ai.mjs" %*

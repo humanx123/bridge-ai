@@ -13,17 +13,17 @@ export const TERMUX = Boolean(process.env.TERMUX_VERSION) || existsSync(join(TER
 
 export const NOMBRE_SISTEMA = WIN ? 'Windows' : MAC ? 'macOS' : TERMUX ? 'Android (Termux)' : 'Linux';
 
-/** Configuración: %APPDATA%\guarura en Windows, ~/.config/guarura en el resto. */
+/** Configuración: %APPDATA%\bridge-ai en Windows, ~/.config/bridge-ai en el resto. */
 export function carpetaConfig() {
-  if (WIN) return join(process.env.APPDATA || join(homedir(), 'AppData', 'Roaming'), 'guarura');
-  return join(process.env.XDG_CONFIG_HOME || join(homedir(), '.config'), 'guarura');
+  if (WIN) return join(process.env.APPDATA || join(homedir(), 'AppData', 'Roaming'), 'bridge-ai');
+  return join(process.env.XDG_CONFIG_HOME || join(homedir(), '.config'), 'bridge-ai');
 }
 
-/** Datos (FreeLLMAPI instalado por Guarura): %LOCALAPPDATA%\guarura, ~/Library/Application Support/guarura o ~/.local/share/guarura. */
+/** Datos (FreeLLMAPI instalado por bridge-ai): %LOCALAPPDATA%\bridge-ai, ~/Library/Application Support/bridge-ai o ~/.local/share/bridge-ai. */
 export function carpetaDatos() {
-  if (WIN) return join(process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local'), 'guarura');
-  if (MAC) return join(homedir(), 'Library', 'Application Support', 'guarura');
-  return join(process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share'), 'guarura');
+  if (WIN) return join(process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local'), 'bridge-ai');
+  if (MAC) return join(homedir(), 'Library', 'Application Support', 'bridge-ai');
+  return join(process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share'), 'bridge-ai');
 }
 
 /** ¿Está este programa en el PATH? */

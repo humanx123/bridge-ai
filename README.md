@@ -1,9 +1,9 @@
-<h1 align="center">🐚 Guarura</h1>
+<h1 align="center">🌉 bridge-ai</h1>
 
 <p align="center"><b>Claude Code y Codex con modelos gratis, desde un solo comando.</b><br>
 Un menú en la terminal para Windows (cmd y PowerShell), macOS, Linux y Android (Termux).</p>
 
-<p align="center"><i>La guarura es la caracola que en Venezuela se sopla para llamar a la gente.<br>Esta llama a tus agentes de código y a decenas de modelos gratuitos.</i></p>
+<p align="center"><i>bridge-ai: un puente en la terminal que conecta Claude Code y Codex con modelos gratuitos.<br>Una herramienta neutral y objetiva para interactuar con IA.</i></p>
 
 <p align="center">
   <a href="https://github.com/humanx123/bridge-ai/stargazers"><img src="https://img.shields.io/github/stars/humanx123/bridge-ai?style=flat&color=ff2d2d&label=%E2%98%85%20estrellas" alt="Estrellas"></a>
@@ -13,7 +13,7 @@ Un menú en la terminal para Windows (cmd y PowerShell), macOS, Linux y Android 
 </p>
 
 ```
-╭─ guarura ─ FreeLLMAPI ● en línea ─ Windows ─╮
+╭─ bridge-ai ─ FreeLLMAPI ● en línea ─ Windows ─╮
   1) Claude Code  (FreeLLMAPI, modelos gratis)
   2) Codex        (FreeLLMAPI, modelos gratis)
   3) Claude Code  (tu cuenta de Anthropic)
@@ -27,11 +27,11 @@ Un menú en la terminal para Windows (cmd y PowerShell), macOS, Linux y Android 
   0) Salir
 ```
 
-`guarura` usa [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi), un enrutador que reúne decenas de modelos gratuitos (Kilo, OVH, LLM7, Groq, Gemini, OpenRouter, Cerebras, NVIDIA…) detrás de una sola clave. Abre **Claude Code** o **Codex** apuntando a esos modelos sin tocar tu configuración: las credenciales solo se pasan al proceso, y `~/.claude` y `~/.codex` no se modifican.
+`bridge-ai` usa [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi), un enrutador que reúne decenas de modelos gratuitos (Kilo, OVH, LLM7, Groq, Gemini, OpenRouter, Cerebras, NVIDIA…) detrás de una sola clave. Abre **Claude Code** o **Codex** apuntando a esos modelos sin tocar tu configuración: las credenciales solo se pasan al proceso, y `~/.claude` y `~/.codex` no se modifican.
 
 ## Qué hace
 
-- **Instala y enciende FreeLLMAPI solo**: lo descarga, lo compila, crea su clave de cifrado y lo deja corriendo en segundo plano. Cada vez que abres `guarura` lo enciende si está apagado.
+- **Instala y enciende FreeLLMAPI solo**: lo descarga, lo compila, crea su clave de cifrado y lo deja corriendo en segundo plano. Cada vez que abres `bridge-ai` lo enciende si está apagado.
 - **Configura la clave sola**: crea la cuenta del panel o inicia sesión, y lee y guarda tu clave unificada `freellmapi-…`.
 - **Activa los proveedores gratis sin clave** (Kilo, OVH, LLM7, AI Horde…) y añade los que piden clave. Muestra el **enlace para conseguir cada una** y lo abre en el navegador.
 - **Claude Code o Codex** con FreeLLMAPI o con tu cuenta normal. Si no están instalados, los instala con npm.
@@ -49,30 +49,30 @@ Necesitas **[Node.js 20.18 o más nuevo](https://nodejs.org)** y **git**.
 winget install OpenJS.NodeJS.LTS
 winget install Git.Git
 git clone https://github.com/humanx123/bridge-ai
-cd guarura
+cd bridge-ai
 instalar.cmd
 ```
 
-Abre una ventana **nueva** de cmd o PowerShell y escribe `guarura`. `instalar.cmd` añade la carpeta al PATH de tu usuario. Sin instalar, también funciona con `guarura.cmd` desde la carpeta.
+Abre una ventana **nueva** de cmd o PowerShell y escribe `bridge-ai`. `instalar.cmd` añade la carpeta al PATH de tu usuario. Sin instalar, también funciona con `bridge-ai.cmd` desde la carpeta.
 
 ### Linux y macOS
 
 ```bash
 git clone https://github.com/humanx123/bridge-ai
-cd guarura
+cd bridge-ai
 ./instalar.sh
-guarura
+bridge-ai
 ```
 
-`instalar.sh` enlaza `guarura` (y el atajo `ia`) en `/usr/local/bin` o, si no hay permiso, en `~/.local/bin` (y lo añade a tu PATH).
+`instalar.sh` enlaza `bridge-ai` (y el atajo `ia`) en `/usr/local/bin` o, si no hay permiso, en `~/.local/bin` (y lo añade a tu PATH).
 
 ### Android (Termux)
 
 ```bash
 pkg install nodejs-lts git
 git clone https://github.com/humanx123/bridge-ai
-cd guarura && ./instalar.sh
-guarura
+cd bridge-ai && ./instalar.sh
+bridge-ai
 ```
 
 En Termux, compilar FreeLLMAPI puede pedir `pkg install python make clang`. Si falla, sigue la [guía de Termux de FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/install/02-android-termux.md) o usa Debian (`proot-distro`).
@@ -81,14 +81,14 @@ En Termux, compilar FreeLLMAPI puede pedir `pkg install python make clang`. Si f
 
 ```bash
 npm install -g github:humanx123/bridge-ai
-guarura
+bridge-ai
 ```
 
 ## Primer uso
 
-1. Escribe `guarura` y elige **1** (Claude Code) o **2** (Codex).
-2. Si FreeLLMAPI no está instalado, `guarura` ofrece instalarlo. Tarda unos minutos la primera vez.
-3. Crea la cuenta del panel de FreeLLMAPI (email y contraseña, solo en tu equipo). `guarura` guarda la clave y activa los proveedores gratis.
+1. Escribe `bridge-ai` y elige **1** (Claude Code) o **2** (Codex).
+2. Si FreeLLMAPI no está instalado, `bridge-ai` ofrece instalarlo. Tarda unos minutos la primera vez.
+3. Crea la cuenta del panel de FreeLLMAPI (email y contraseña, solo en tu equipo). `bridge-ai` guarda la clave y activa los proveedores gratis.
 4. Opcional: en **8 → Proveedores**, añade claves gratuitas para tener más modelos y más rápidos. Recomendadas: **Groq**, **Gemini (Google AI Studio)**, **OpenRouter** y **Cerebras**. Cada una trae su enlace.
 
 ¿Ya tienes FreeLLMAPI (por ejemplo la app de escritorio, que usa el puerto 3001)? En **5 → Configuración → URL**, escribe `http://127.0.0.1:3001`.
@@ -97,33 +97,33 @@ guarura
 
 | Comando | Qué hace |
 |---|---|
-| `guarura` (o solo `ia`) | Menú interactivo |
-| `guarura claude` | Claude Code con FreeLLMAPI |
-| `guarura codex` | Codex con FreeLLMAPI |
-| `guarura estado` | Estado, clave, modelos e instalación |
-| `guarura instalar` | Instala o actualiza FreeLLMAPI en este equipo |
-| `guarura encender` / `guarura apagar` | Enciende o apaga FreeLLMAPI en segundo plano |
-| `guarura proveedores` | Proveedores gratis y claves API |
-| `guarura donar` | Direcciones para donar, con código QR en la terminal |
-| `guarura ayuda` · `guarura version` | Ayuda y versión |
+| `bridge-ai` (o solo `ia`) | Menú interactivo |
+| `bridge-ai claude` | Claude Code con FreeLLMAPI |
+| `bridge-ai codex` | Codex con FreeLLMAPI |
+| `bridge-ai estado` | Estado, clave, modelos e instalación |
+| `bridge-ai instalar` | Instala o actualiza FreeLLMAPI en este equipo |
+| `bridge-ai encender` / `bridge-ai apagar` | Enciende o apaga FreeLLMAPI en segundo plano |
+| `bridge-ai proveedores` | Proveedores gratis y claves API |
+| `bridge-ai donar` | Direcciones para donar, con código QR en la terminal |
+| `bridge-ai ayuda` · `bridge-ai version` | Ayuda y versión |
 
 ## Dónde guarda las cosas
 
 | | Windows | macOS | Linux / Termux |
 |---|---|---|---|
-| Configuración | `%APPDATA%\guarura\config.json` | `~/.config/guarura/config.json` | `~/.config/guarura/config.json` |
-| FreeLLMAPI | `%LOCALAPPDATA%\guarura\freellmapi` | `~/Library/Application Support/guarura/freellmapi` | `~/.local/share/guarura/freellmapi` |
+| Configuración | `%APPDATA%\bridge-ai\config.json` | `~/.config/bridge-ai/config.json` | `~/.config/bridge-ai/config.json` |
+| FreeLLMAPI | `%LOCALAPPDATA%\bridge-ai\freellmapi` | `~/Library/Application Support/bridge-ai/freellmapi` | `~/.local/share/bridge-ai/freellmapi` |
 
 La configuración guarda tu clave unificada y la sesión del panel, y solo la puede leer tu usuario. Tus claves de proveedores se quedan cifradas dentro de FreeLLMAPI.
 
 ## Proyectos hermanos
 
 - **[laboratorio.ia](https://github.com/ReserchLab/lab-ia)**: chat, investigación científica verificada e imágenes con IA, en tu Cloudflare o en tu teléfono. [Pruébalo sin registrarte](https://lab-ia-demo.reserchlab.workers.dev).
-- **[FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi)**: el enrutador de modelos gratuitos que usa `guarura` (proyecto independiente, licencia MIT).
+- **[FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi)**: el enrutador de modelos gratuitos que usa `bridge-ai` (proyecto independiente, licencia MIT).
 
 ## Apoya el proyecto
 
-Si `guarura` te sirve, dale una **★ estrella** y compártelo. También puedes donar en cripto (`guarura donar` muestra los QR en la terminal):
+Si `bridge-ai` te sirve, dale una **★ estrella** y compártelo. También puedes donar en cripto (`bridge-ai donar` muestra los QR en la terminal):
 
 | Bitcoin (BTC) | Monero (XMR) | USDC (red Arbitrum One) |
 |:---:|:---:|:---:|
@@ -137,4 +137,4 @@ Envía USDC solo por la red **Arbitrum One**. Por otra red, los fondos se pierde
 
 ## Licencia
 
-[MIT](LICENSE). Incluye el generador de QR de Kazuhiko Arase (MIT). Claude Code, Codex y FreeLLMAPI son proyectos de sus autores; `guarura` solo los abre.
+[MIT](LICENSE). Incluye el generador de QR de Kazuhiko Arase (MIT). Claude Code, Codex y FreeLLMAPI son proyectos de sus autores; `bridge-ai` solo los abre.

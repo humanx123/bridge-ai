@@ -5,9 +5,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
 
-const tmp = mkdtempSync(join(tmpdir(), 'guarura-prueba-'));
+const tmp = mkdtempSync(join(tmpdir(), 'bridge-ai-prueba-'));
 const env = { ...process.env, HOME: tmp, USERPROFILE: tmp, APPDATA: tmp, LOCALAPPDATA: tmp, XDG_CONFIG_HOME: join(tmp, 'cfg'), NO_COLOR: '1' };
-const ia = (...a) => spawnSync(process.execPath, ['bin/guarura.mjs', ...a], { env, encoding: 'utf8', input: '' });
+const ia = (...a) => spawnSync(process.execPath, ['bin/bridge-ai.mjs', ...a], { env, encoding: 'utf8', input: '' });
 
 try {
   const v = ia('version');
@@ -15,7 +15,7 @@ try {
   assert.equal(v.stdout.trim(), JSON.parse(readFileSync('package.json', 'utf8')).version);
 
   const ayuda = ia('ayuda');
-  assert.match(ayuda.stdout, /guarura claude/);
+  assert.match(ayuda.stdout, /bridge-ai claude/);
   assert.match(ayuda.stdout, /Hecho xhumanx & IA/);
 
   const donar = ia('donar');
@@ -23,7 +23,7 @@ try {
   assert.match(donar.stdout, /█/);
 
   // El menú termina limpio cuando se cierra la entrada.
-  const menu = spawnSync(process.execPath, ['bin/guarura.mjs'], { env: { ...env }, encoding: 'utf8', input: '0\n', timeout: 20_000 });
+  const menu = spawnSync(process.execPath, ['bin/bridge-ai.mjs'], { env: { ...env }, encoding: 'utf8', input: '0\n', timeout: 20_000 });
   assert.equal(menu.status, 0, menu.stderr);
   assert.match(menu.stdout, /Claude Code/);
 

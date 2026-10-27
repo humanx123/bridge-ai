@@ -13,7 +13,7 @@ export const POR_DEFECTO = {
   modeloClaude: '',
   modeloCodex: '',
   carpeta: homedir(), // donde se abren Claude Code y Codex
-  freellmapi: join(carpetaDatos(), 'freellmapi'), // instalación local que enciende Guarura
+  freellmapi: join(carpetaDatos(), 'freellmapi'), // instalación local que enciende bridge-ai
   encenderSolo: true,
 };
 

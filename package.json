@@ -1,18 +1,18 @@
 {
   "name": "bridge-ai",
   "version": "1.0.0",
-  "description": "Guarura: Claude Code y Codex con modelos gratis a través de FreeLLMAPI, desde un menú en la terminal para Windows, macOS, Linux y Termux.",
+  "description": "bridge-ai: Claude Code y Codex con modelos gratis a través de FreeLLMAPI, desde un menú en la terminal para Windows, macOS, Linux y Termux.",
   "type": "module",
   "bin": {
-    "guarura": "bin/guarura.mjs",
-    "ia": "bin/guarura.mjs"
+    "bridge-ai": "bin/bridge.mjs",
+    "ia": "bin/bridge.mjs"
   },
   "files": [
     "bin",
     "src",
     "lib",
-    "guarura",
-    "guarura.cmd",
+    "bridge-ai",
+    "bridge-ai.cmd",
     "ia",
     "ia.cmd",
     "instalar.sh",
@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/humanx123/bridge-ai#readme",
   "keywords": [
-    "guarura",
     "claude-code",
     "codex",
     "freellmapi",
