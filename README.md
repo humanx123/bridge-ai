@@ -6,7 +6,7 @@ Un menú en la terminal para Windows (cmd y PowerShell), macOS, Linux y Android 
 <p align="center"><i>La guarura es la caracola que en Venezuela se sopla para llamar a la gente.<br>Esta llama a tus agentes de código y a decenas de modelos gratuitos.</i></p>
 
 <p align="center">
-  <a href="https://github.com/humanx123/guarura/stargazers"><img src="https://img.shields.io/github/stars/humanx123/guarura?style=flat&color=ff2d2d&label=%E2%98%85%20estrellas" alt="Estrellas"></a>
+  <a href="https://github.com/humanx123/bridge-ai/stargazers"><img src="https://img.shields.io/github/stars/humanx123/bridge-ai?style=flat&color=ff2d2d&label=%E2%98%85%20estrellas" alt="Estrellas"></a>
   <img src="https://img.shields.io/badge/Windows%20%C2%B7%20macOS%20%C2%B7%20Linux%20%C2%B7%20Termux-111" alt="Sistemas">
   <img src="https://img.shields.io/badge/node-%E2%89%A5%2020.18-111" alt="Node 20.18+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/licencia-MIT-111" alt="MIT"></a>
@@ -48,7 +48,7 @@ Necesitas **[Node.js 20.18 o más nuevo](https://nodejs.org)** y **git**.
 ```bat
 winget install OpenJS.NodeJS.LTS
 winget install Git.Git
-git clone https://github.com/humanx123/guarura
+git clone https://github.com/humanx123/bridge-ai
 cd guarura
 instalar.cmd
 ```
@@ -58,7 +58,7 @@ Abre una ventana **nueva** de cmd o PowerShell y escribe `guarura`. `instalar.cm
 ### Linux y macOS
 
 ```bash
-git clone https://github.com/humanx123/guarura
+git clone https://github.com/humanx123/bridge-ai
 cd guarura
 ./instalar.sh
 guarura
@@ -70,7 +70,7 @@ guarura
 
 ```bash
 pkg install nodejs-lts git
-git clone https://github.com/humanx123/guarura
+git clone https://github.com/humanx123/bridge-ai
 cd guarura && ./instalar.sh
 guarura
 ```
@@ -80,7 +80,7 @@ En Termux, compilar FreeLLMAPI puede pedir `pkg install python make clang`. Si f
 ### Con npm (cualquier sistema)
 
 ```bash
-npm install -g github:humanx123/guarura
+npm install -g github:humanx123/bridge-ai
 guarura
 ```
 

@@ -1,5 +1,5 @@
 {
-  "name": "guarura",
+  "name": "bridge-ai",
   "version": "1.0.0",
   "description": "Guarura: Claude Code y Codex con modelos gratis a través de FreeLLMAPI, desde un menú en la terminal para Windows, macOS, Linux y Termux.",
   "type": "module",
@@ -27,9 +27,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humanx123/guarura.git"
+    "url": "git+https://github.com/humanx123/bridge-ai.git"
   },
-  "homepage": "https://github.com/humanx123/guarura#readme",
+  "homepage": "https://github.com/humanx123/bridge-ai#readme",
   "keywords": [
     "guarura",
     "claude-code",
