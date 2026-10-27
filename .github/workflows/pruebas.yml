@@ -1,0 +1,38 @@
+name: pruebas
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  pruebas:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm test
+      - name: Lanzador e instalador (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          call ia.cmd version || exit /b 1
+          powershell -NoProfile -ExecutionPolicy Bypass -File instalar.ps1 || exit /b 1
+          call ia.cmd donar | findstr /C:"bc1qd9j45f4t0jwyhjhqh2kvz2cr7k8xye460rr2y7" || exit /b 1
+      - name: Lanzador e instalador (Linux y macOS)
+        if: runner.os != 'Windows'
+        run: |
+          ./ia version
+          mkdir -p "$RUNNER_TEMP/bin" && PREFIX="$RUNNER_TEMP" ./instalar.sh
+          "$RUNNER_TEMP/bin/ia" donar | grep -q bc1qd9j45f4t0jwyhjhqh2kvz2cr7k8xye460rr2y7
+      - name: Instalar y encender FreeLLMAPI de verdad
+        if: matrix.node == 22
+        shell: bash
+        run: |
+          node bin/ia.mjs instalar < /dev/null || true
+          node bin/ia.mjs encender
+          curl -sf http://127.0.0.1:31415/api/ping
+          node bin/ia.mjs estado
+          node bin/ia.mjs apagar
