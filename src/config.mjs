@@ -1,7 +1,7 @@
 // Configuración en un JSON solo legible por el usuario. Importa la del antiguo `ia` de Bash si existe.
 import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { carpetaConfig, carpetaDatos, WIN } from './sistema.mjs';
 
 const ARCHIVO = join(carpetaConfig(), 'config.json');
@@ -13,13 +13,13 @@ export const POR_DEFECTO = {
   modeloClaude: '',
   modeloCodex: '',
   carpeta: homedir(), // donde se abren Claude Code y Codex
-  freellmapi: join(carpetaDatos(), 'freellmapi'), // instalación local que enciende ia
+  freellmapi: join(carpetaDatos(), 'freellmapi'), // instalación local que enciende Guarura
   encenderSolo: true,
 };
 
 /** El `ia` de Bash guardaba VARIABLE="valor" en ~/.config/ia/config: se aprovecha en la primera vez. */
 function importarAntigua() {
-  const vieja = join(carpetaConfig(), 'config');
+  const vieja = join(dirname(carpetaConfig()), 'ia', 'config');
   if (WIN || !existsSync(vieja)) return {};
   const v = Object.fromEntries(readFileSync(vieja, 'utf8').split('\n').map(l => l.match(/^(\w+)="?(.*?)"?$/)).filter(Boolean).map(m => [m[1], m[2]]));
   return {

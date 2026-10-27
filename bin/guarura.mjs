@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// ia — un menú para usar Claude Code y Codex con modelos gratis a través de FreeLLMAPI.
-// Funciona igual en Windows (cmd o PowerShell), macOS, Linux y Termux.
-//   ia            menú
-//   ia claude     Claude Code con FreeLLMAPI          ia codex      Codex con FreeLLMAPI
-//   ia instalar   instala FreeLLMAPI                  ia estado     estado y modelos
-//   ia encender | apagar | proveedores | donar | ayuda | version
+// Guarura — un menú para usar Claude Code y Codex con modelos gratis a través de FreeLLMAPI.
+// Funciona igual en Windows (cmd o PowerShell), macOS, Linux y Termux. «ia» es un atajo del mismo comando.
+//   guarura            menú
+//   guarura claude     Claude Code con FreeLLMAPI          guarura codex      Codex con FreeLLMAPI
+//   guarura instalar   instala FreeLLMAPI                  guarura estado     estado y modelos
+//   guarura encender | apagar | proveedores | donar | ayuda | version
 // Las credenciales solo se pasan al proceso de Claude/Codex: no se tocan ~/.claude ni ~/.codex.
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -20,7 +20,7 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const VERSION = JSON.parse(readFileSync(join(RAIZ, 'package.json'), 'utf8')).version;
 const [mayor, menor] = process.versions.node.split('.').map(Number);
 if (mayor < 20 || (mayor === 20 && menor < 18)) {
-  console.error(`ia necesita Node.js 20.18 o más nuevo (tienes ${process.versions.node}). Descárgalo en https://nodejs.org`);
+  console.error(`Guarura necesita Node.js 20.18 o más nuevo (tienes ${process.versions.node}). Descárgalo en https://nodejs.org`);
   process.exit(1);
 }
 
@@ -199,14 +199,14 @@ async function estado() {
   const on = await gw.encendido(cfg);
   const ok = on && await gw.claveValida(cfg);
   console.log(negrita('Estado'));
-  console.log(`  Sistema:        ${NOMBRE_SISTEMA} · Node ${process.versions.node} · ia ${VERSION}`);
+  console.log(`  Sistema:        ${NOMBRE_SISTEMA} · Node ${process.versions.node} · Guarura ${VERSION}`);
   console.log(`  FreeLLMAPI:     ${cfg.url}  ${ok ? verde('● en línea') : on ? amarillo('● encendido, clave no válida') : rojo('● apagado')}`);
   console.log(`  Claude usa:     ${cfg.url}   Codex usa: ${cfg.url}/v1`);
   console.log(`  API key:        ${enmascarar(cfg.apiKey)}`);
   console.log(`  Modelo Claude:  ${cfg.modeloClaude || 'automático'}`);
   console.log(`  Modelo Codex:   ${cfg.modeloCodex || 'automático'}`);
   console.log(`  Carpeta:        ${cfg.carpeta}`);
-  console.log(`  Instalación:    ${gw.instalado(cfg) ? cfg.freellmapi : tenue('no instalado por ia')}`);
+  console.log(`  Instalación:    ${gw.instalado(cfg) ? cfg.freellmapi : tenue('no instalado por Guarura')}`);
   console.log(`  Configuración:  ${rutaConfig()}`);
   console.log(`  Claude Code: ${existe('claude') ? verde('instalado') : tenue('no instalado')} · Codex: ${existe('codex') ? verde('instalado') : tenue('no instalado')}`);
   if (ok) console.log(`  Modelos:        ${(await gw.modelos(cfg)).length}`);
@@ -224,7 +224,7 @@ async function menuConfiguracion() {
     console.log(`  6) Proveedores y claves API`);
     console.log(`  7) FreeLLMAPI: instalar o actualizar`);
     console.log(`  8) FreeLLMAPI: reiniciar    9) FreeLLMAPI: ver registro`);
-    console.log(`  E) Encender FreeLLMAPI al abrir ia: ${cfg.encenderSolo ? verde('sí') : 'no'}`);
+    console.log(`  E) Encender FreeLLMAPI al abrir Guarura: ${cfg.encenderSolo ? verde('sí') : 'no'}`);
     console.log(`  R) Restablecer valores por defecto`);
     console.log('  0) Volver');
     const o = (await preguntar('> '))?.toLowerCase();
@@ -269,7 +269,7 @@ async function menu() {
     limpiar();
     const on = await gw.encendido(cfg);
     const st = on ? verde('● en línea') : rojo('● apagado');
-    console.log(negrita(`╭─ ia ─ FreeLLMAPI ${st}${negrita(` ─ ${NOMBRE_SISTEMA} ─╮`)}`));
+    console.log(negrita(`╭─ guarura ─ FreeLLMAPI ${st}${negrita(` ─ ${NOMBRE_SISTEMA} ─╮`)}`));
     console.log(`  1) Claude Code  ${amarillo('(FreeLLMAPI, modelos gratis)')}`);
     console.log(`  2) Codex        ${amarillo('(FreeLLMAPI, modelos gratis)')}`);
     console.log('  3) Claude Code  (tu cuenta de Anthropic)');
@@ -297,18 +297,19 @@ async function menu() {
   }
 }
 
-const AYUDA = `${negrita(`ia ${VERSION}`)} — Claude Code y Codex con modelos gratis (FreeLLMAPI)
+const AYUDA = `${negrita(`Guarura ${VERSION}`)} — Claude Code y Codex con modelos gratis (FreeLLMAPI)
+${tenue('La guarura es la caracola que se sopla para llamar a la gente: esta llama a tus agentes.')}
 
-  ia              menú interactivo
-  ia claude       Claude Code con FreeLLMAPI
-  ia codex        Codex con FreeLLMAPI
-  ia estado       estado, clave y modelos
-  ia instalar     instala (o actualiza) FreeLLMAPI en este equipo
-  ia encender     enciende FreeLLMAPI en segundo plano
-  ia apagar       lo apaga
-  ia proveedores  activa proveedores gratis y añade claves
-  ia donar        BTC, Monero o USDC
-  ia version
+  guarura              menú interactivo  (atajo: ia)
+  guarura claude       Claude Code con FreeLLMAPI
+  guarura codex        Codex con FreeLLMAPI
+  guarura estado       estado, clave y modelos
+  guarura instalar     instala (o actualiza) FreeLLMAPI en este equipo
+  guarura encender     enciende FreeLLMAPI en segundo plano
+  guarura apagar       lo apaga
+  guarura proveedores  activa proveedores gratis y añade claves
+  guarura donar        BTC, Monero o USDC
+  guarura version
 
 Configuración: ${rutaConfig()}
 ${REPO}
@@ -320,8 +321,8 @@ else if (['version', '-v', '--version'].includes(orden)) console.log(VERSION);
 else if (orden === 'donar') mostrarDonaciones();
 else if (orden === 'estado') await estado();
 else if (orden === 'instalar') { if (await (gw.instalado(cfg) ? gw.actualizar(cfg) : gw.instalar(cfg))) await asegurarGateway(); }
-else if (orden === 'encender') console.log((await gw.encender(cfg)) ? verde(`FreeLLMAPI en línea: ${cfg.url}`) : rojo('No se pudo encender (¿instalado? prueba: ia instalar)'));
-else if (orden === 'apagar') console.log((await gw.apagar(cfg)) ? 'FreeLLMAPI apagado.' : 'No estaba encendido por ia.');
+else if (orden === 'encender') console.log((await gw.encender(cfg)) ? verde(`FreeLLMAPI en línea: ${cfg.url}`) : rojo('No se pudo encender (¿instalado? prueba: guarura instalar)'));
+else if (orden === 'apagar') console.log((await gw.apagar(cfg)) ? 'FreeLLMAPI apagado.' : 'No estaba encendido por Guarura.');
 else if (orden === 'proveedores') await menuProveedores();
 else if (orden === 'claude' || orden === 'codex') process.exitCode = (await lanzar(orden)) ? 0 : 1;
 else if (orden) { console.log(AYUDA); process.exitCode = 1; }

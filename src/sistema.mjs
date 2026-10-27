@@ -13,17 +13,17 @@ export const TERMUX = Boolean(process.env.TERMUX_VERSION) || existsSync(join(TER
 
 export const NOMBRE_SISTEMA = WIN ? 'Windows' : MAC ? 'macOS' : TERMUX ? 'Android (Termux)' : 'Linux';
 
-/** Configuración: %APPDATA%\ia en Windows, ~/.config/ia en el resto. */
+/** Configuración: %APPDATA%\guarura en Windows, ~/.config/guarura en el resto. */
 export function carpetaConfig() {
-  if (WIN) return join(process.env.APPDATA || join(homedir(), 'AppData', 'Roaming'), 'ia');
-  return join(process.env.XDG_CONFIG_HOME || join(homedir(), '.config'), 'ia');
+  if (WIN) return join(process.env.APPDATA || join(homedir(), 'AppData', 'Roaming'), 'guarura');
+  return join(process.env.XDG_CONFIG_HOME || join(homedir(), '.config'), 'guarura');
 }
 
-/** Datos (FreeLLMAPI instalado por ia): %LOCALAPPDATA%\ia, ~/Library/Application Support/ia o ~/.local/share/ia. */
+/** Datos (FreeLLMAPI instalado por Guarura): %LOCALAPPDATA%\guarura, ~/Library/Application Support/guarura o ~/.local/share/guarura. */
 export function carpetaDatos() {
-  if (WIN) return join(process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local'), 'ia');
-  if (MAC) return join(homedir(), 'Library', 'Application Support', 'ia');
-  return join(process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share'), 'ia');
+  if (WIN) return join(process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local'), 'guarura');
+  if (MAC) return join(homedir(), 'Library', 'Application Support', 'guarura');
+  return join(process.env.XDG_DATA_HOME || join(homedir(), '.local', 'share'), 'guarura');
 }
 
 /** ¿Está este programa en el PATH? */

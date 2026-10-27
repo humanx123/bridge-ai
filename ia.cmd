@@ -1,3 +1,3 @@
 @echo off
-rem Lanzador de ia para Windows (cmd y PowerShell).
-node "%~dp0bin\ia.mjs" %*
+rem Atajo: ia = guarura.
+node "%~dp0bin\guarura.mjs" %*

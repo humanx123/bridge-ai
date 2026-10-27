@@ -80,7 +80,7 @@ export async function instalar(cfg) {
 
 export async function actualizar(cfg) {
   const dir = cfg.freellmapi;
-  if (!existsSync(join(dir, '.git'))) { console.log(rojo('No hay una instalación de FreeLLMAPI hecha por ia.')); return false; }
+  if (!existsSync(join(dir, '.git'))) { console.log(rojo('No hay una instalación de FreeLLMAPI hecha por Guarura.')); return false; }
   await apagar(cfg);
   if (await ejecutar('git', ['pull', '--ff-only'], { cwd: dir })) return false;
   return instalar(cfg);

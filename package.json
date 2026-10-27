@@ -1,15 +1,44 @@
 {
-  "name": "ia-puente",
+  "name": "guarura",
   "version": "1.0.0",
-  "description": "Claude Code y Codex con modelos gratis a través de FreeLLMAPI: un puente en la terminal para Windows, macOS, Linux y Termux.",
+  "description": "Guarura: Claude Code y Codex con modelos gratis a través de FreeLLMAPI, desde un menú en la terminal para Windows, macOS, Linux y Termux.",
   "type": "module",
-  "bin": { "ia": "bin/ia.mjs" },
-  "files": ["bin", "src", "lib", "ia", "ia.cmd", "instalar.sh", "instalar.cmd", "instalar.ps1"],
-  "scripts": { "test": "node prueba.mjs" },
-  "engines": { "node": ">=20.18" },
-  "repository": { "type": "git", "url": "git+https://github.com/humanx123/ia-puente.git" },
-  "homepage": "https://github.com/humanx123/ia-puente#readme",
-  "keywords": ["claude-code", "codex", "freellmapi", "llm", "gratis", "cli"],
+  "bin": {
+    "guarura": "bin/guarura.mjs",
+    "ia": "bin/guarura.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "lib",
+    "guarura",
+    "guarura.cmd",
+    "ia",
+    "ia.cmd",
+    "instalar.sh",
+    "instalar.cmd",
+    "instalar.ps1"
+  ],
+  "scripts": {
+    "test": "node prueba.mjs"
+  },
+  "engines": {
+    "node": ">=20.18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humanx123/guarura.git"
+  },
+  "homepage": "https://github.com/humanx123/guarura#readme",
+  "keywords": [
+    "guarura",
+    "claude-code",
+    "codex",
+    "freellmapi",
+    "llm",
+    "gratis",
+    "cli"
+  ],
   "author": "humanx123 (xhumanx & IA)",
   "license": "MIT"
 }

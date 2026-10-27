@@ -10,7 +10,7 @@ export const DONACIONES = [
   { id: 'usdc', nombre: 'USDC', red: 'red Arbitrum One · mínimo 5 USDC', direccion: '0xAC43f9b0E7F0ae6386cfC8ef6BFf62CE9c3006A1', uri: d => d },
 ];
 export const FIRMA = 'Hecho xhumanx & IA';
-export const REPO = 'https://github.com/humanx123/ia-puente';
+export const REPO = 'https://github.com/humanx123/guarura';
 
 function matriz(texto) {
   const q = qrcode(0, 'M');
@@ -48,7 +48,7 @@ export function qrSvg(texto, modulo = 6) {
 
 export function mostrarDonaciones({ conQr = true } = {}) {
   console.log(negrita('Apoya el proyecto'));
-  console.log(`Si ia te sirve, dale una ★ en GitHub: ${REPO}\n`);
+  console.log(`Si Guarura te sirve, dale una ★ en GitHub: ${REPO}\n`);
   for (const d of DONACIONES) {
     console.log(negrita(d.nombre), tenue(`(${d.red})`));
     if (conQr) console.log(qrTerminal(d.uri(d.direccion)));
