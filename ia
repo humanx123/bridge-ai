@@ -6,4 +6,4 @@ while [ -L "$f" ]; do
   f=$(readlink "$f")
   case "$f" in /*) ;; *) f="$d/$f" ;; esac
 done
-exec node "$(cd "$(dirname "$f")" && pwd)/bin/guarura.mjs" "$@"
+exec node "$(cd "$(dirname "$f")" && pwd)/bin/bridge.mjs" "$@"

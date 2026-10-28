@@ -1,3 +1,3 @@
 @echo off
 rem Atajo: ia = bridge-ai.
-node "%~dp0bin\bridge-ai.mjs" %*
+node "%~dp0bin\bridge.mjs" %*

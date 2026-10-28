@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 
 const tmp = mkdtempSync(join(tmpdir(), 'bridge-ai-prueba-'));
 const env = { ...process.env, HOME: tmp, USERPROFILE: tmp, APPDATA: tmp, LOCALAPPDATA: tmp, XDG_CONFIG_HOME: join(tmp, 'cfg'), NO_COLOR: '1' };
-const ia = (...a) => spawnSync(process.execPath, ['bin/bridge-ai.mjs', ...a], { env, encoding: 'utf8', input: '' });
+const ia = (...a) => spawnSync(process.execPath, ['bin/bridge.mjs', ...a], { env, encoding: 'utf8', input: '' });
 
 try {
   const v = ia('version');
@@ -23,7 +23,7 @@ try {
   assert.match(donar.stdout, /█/);
 
   // El menú termina limpio cuando se cierra la entrada.
-  const menu = spawnSync(process.execPath, ['bin/bridge-ai.mjs'], { env: { ...env }, encoding: 'utf8', input: '0\n', timeout: 20_000 });
+  const menu = spawnSync(process.execPath, ['bin/bridge.mjs'], { env: { ...env }, encoding: 'utf8', input: '0\n', timeout: 20_000 });
   assert.equal(menu.status, 0, menu.stderr);
   assert.match(menu.stdout, /Claude Code/);
 

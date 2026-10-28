@@ -20,7 +20,7 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const VERSION = JSON.parse(readFileSync(join(RAIZ, 'package.json'), 'utf8')).version;
 const [mayor, menor] = process.versions.node.split('.').map(Number);
 if (mayor < 20 || (mayor === 20 && menor < 18)) {
-  `console.error(`bridge-ai necesita Node.js 20.18 o más nuevo (tienes ${process.versions.node}). Descárgalo en https://nodejs.org`);
+  console.error(`bridge-ai necesita Node.js 20.18 o más nuevo (tienes ${process.versions.node}). Descárgalo en https://nodejs.org`);
   process.exit(1);
 }
 
@@ -297,7 +297,7 @@ async function menu() {
   }
 }
 
-`const AYUDA = `${negrita(`bridge-ai ${VERSION}`)} — Claude Code y Codex con modelos gratis (FreeLLMAPI)
+const AYUDA = `${negrita(`bridge-ai ${VERSION}`)} — Claude Code y Codex con modelos gratis (FreeLLMAPI)
 ${tenue('La bridge-ai es la caracola que se sopla para llamar a la gente: esta llama a tus agentes.')}
 
   bridge-ai              menú interactivo  (atajo: ia)
