@@ -1,7 +1,7 @@
 // FreeLLMAPI: instalarlo, encenderlo en segundo plano, apagarlo y comprobarlo.
 import { spawn, spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
-import { closeSync, existsSync, mkdirSync, openSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { ejecutar, existe, WIN } from './sistema.mjs';
 import { amarillo, cian, rojo, verde } from './ui.mjs';
@@ -86,9 +86,51 @@ export async function actualizar(cfg) {
   return instalar(cfg);
 }
 
+// El archivo de PID puede estar desfasado (lo escribe también el `ia` de Termux, que guarda el PID de un
+// envoltorio y no el del servidor). Por eso el servidor real se busca por el puerto que escucha.
+
+/** PIDs de los servidores de FreeLLMAPI que atienden en el puerto de la configuración. */
+function pidsDeFreellmapi(cfg) {
+  const puerto = Number(puertoDe(cfg.url));
+  if (WIN) {
+    const r = spawnSync('netstat', ['-ano', '-p', 'TCP'], { encoding: 'utf8' });
+    const linea = (r.stdout || '').split(/\r?\n/).find(l => l.includes(`:${puerto} `) && /LISTENING|ESCUCHANDO/i.test(l));
+    return linea ? [Number(linea.trim().split(/\s+/).pop())] : [];
+  }
+  if (process.platform === 'linux') {
+    // Termux y Linux: no hace falta mirar el socket (puede estar vedado). Cada servidor de FreeLLMAPI
+    // lleva en su entorno PORT=<puerto> desde el .env, así que se identifica por eso.
+    const pids = [];
+    for (const pid of readdirSync('/proc').filter(p => /^\d+$/.test(p))) {
+      try {
+        if (!/server\/dist\/index\.js/.test(readFileSync(`/proc/${pid}/cmdline`, 'utf8'))) continue;
+        if (readFileSync(`/proc/${pid}/environ`, 'utf8').split('\0').includes(`PORT=${puerto}`)) pids.push(Number(pid));
+      } catch { /* el proceso ya terminó o no es legible */ }
+    }
+    return pids;
+  }
+  const r = spawnSync('lsof', ['-nP', `-iTCP:${puerto}`, '-sTCP:LISTEN', '-t'], { encoding: 'utf8' });
+  return (r.stdout || '').split('\n').filter(Boolean).map(Number);
+}
+
+/** Línea de comandos de un proceso. */
+function comandoDe(pid) {
+  if (WIN) return spawnSync('powershell', ['-NoProfile', '-Command', `(Get-CimInstance Win32_Process -Filter "ProcessId=${pid}").CommandLine`], { encoding: 'utf8' }).stdout || '';
+  if (existsSync(`/proc/${pid}/cmdline`)) return readFileSync(`/proc/${pid}/cmdline`, 'utf8').replace(/\0/g, ' ');
+  return spawnSync('ps', ['-o', 'args=', '-p', String(pid)], { encoding: 'utf8' }).stdout || '';
+}
+
+/** ¿Es un servidor de FreeLLMAPI? Así no se mata nada ajeno que use el mismo puerto. */
+const esFreellmapi = pid => /server[\\/]dist[\\/]index\.js/.test(comandoDe(pid));
+
 /** Enciende el servidor en segundo plano (sigue vivo al cerrar ia). */
 export async function encender(cfg, { silencioso = false } = {}) {
-  if (await encendido(cfg)) return true;
+  if (await encendido(cfg)) {
+    // Ya está en marcha (quizá lo arrancó otro lanzador): se anota su PID real para poder apagarlo luego.
+    const [vivo] = pidsDeFreellmapi(cfg);
+    if (vivo && existsSync(cfg.freellmapi)) writeFileSync(archivoPid(cfg.freellmapi), String(vivo));
+    return true;
+  }
   const dir = cfg.freellmapi;
   if (!existsSync(entrada(dir))) return false;
   if (!silencioso) console.log(cian('Encendiendo FreeLLMAPI…'));
@@ -108,16 +150,21 @@ export async function encender(cfg, { silencioso = false } = {}) {
   return false;
 }
 
+/** Apaga FreeLLMAPI. Devuelve true solo si ya no responde en su puerto. */
 export async function apagar(cfg) {
-  const pid = Number(existsSync(archivoPid(cfg.freellmapi)) ? readFileSync(archivoPid(cfg.freellmapi), 'utf8') : 0);
-  if (!pid) return false;
-  try {
-    if (WIN) spawnSync('taskkill', ['/PID', String(pid), '/T', '/F'], { stdio: 'ignore' });
-    else process.kill(pid);
-  } catch { /* ya estaba apagado */ }
-  rmSync(archivoPid(cfg.freellmapi), { force: true });
-  for (let i = 0; i < 10 && await encendido(cfg); i++) await espera(500);
-  return true;
+  const dir = cfg.freellmapi;
+  const candidatos = new Set([Number(existsSync(archivoPid(dir)) ? readFileSync(archivoPid(dir), 'utf8') : 0), ...pidsDeFreellmapi(cfg)]);
+  for (const pid of candidatos) {
+    if (!pid || !esFreellmapi(pid)) continue;
+    try {
+      if (WIN) spawnSync('taskkill', ['/PID', String(pid), '/T', '/F'], { stdio: 'ignore' });
+      else process.kill(pid, 'SIGTERM');
+    } catch { /* ya se había ido */ }
+  }
+  rmSync(archivoPid(dir), { force: true });
+  // El servidor termina las peticiones en curso antes de cerrar: se espera hasta 20 s.
+  for (let i = 0; i < 40 && await encendido(cfg); i++) await espera(500);
+  return !(await encendido(cfg));
 }
 
 export function ultimasLineas(dir, n = 40) {

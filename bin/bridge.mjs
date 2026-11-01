@@ -244,7 +244,11 @@ async function menuConfiguracion() {
       if (v && existsSync(v)) { cfg.carpeta = v; guardar(cfg); } else if (v) { console.log(rojo('No existe.')); await pausa(); }
     } else if (o === '6') await menuProveedores();
     else if (o === '7') { await (gw.instalado(cfg) ? gw.actualizar(cfg) : gw.instalar(cfg)); await gw.encender(cfg); await pausa(); }
-    else if (o === '8') { await gw.apagar(cfg); console.log((await gw.encender(cfg)) ? verde('Encendido.') : rojo('No arrancó.')); await pausa(); }
+    else if (o === '8') {
+      if (!(await gw.apagar(cfg))) console.log(rojo('No se pudo apagar FreeLLMAPI (sigue respondiendo). Mira el registro con la opción 9.'));
+      else console.log((await gw.encender(cfg)) ? verde('Encendido.') : rojo('No arrancó.'));
+      await pausa();
+    }
     else if (o === '9') { console.log(gw.ultimasLineas(cfg.freellmapi)); await pausa(); }
     else if (o === 'e') { cfg.encenderSolo = !cfg.encenderSolo; guardar(cfg); }
     else if (o === 'r') { if (await confirmar('¿Restablecer todo? (se conservan la clave y la sesión)', false)) { cfg = { ...POR_DEFECTO, apiKey: cfg.apiKey, tokenPanel: cfg.tokenPanel }; guardar(cfg); } }
@@ -322,7 +326,7 @@ else if (orden === 'donar') mostrarDonaciones();
 else if (orden === 'estado') await estado();
 else if (orden === 'instalar') { if (await (gw.instalado(cfg) ? gw.actualizar(cfg) : gw.instalar(cfg))) await asegurarGateway(); }
 else if (orden === 'encender') console.log((await gw.encender(cfg)) ? verde(`FreeLLMAPI en línea: ${cfg.url}`) : rojo('No se pudo encender (¿instalado? prueba: bridge-ai instalar)'));
-else if (orden === 'apagar') console.log((await gw.apagar(cfg)) ? 'FreeLLMAPI apagado.' : 'No estaba encendido por bridge-ai.');
+else if (orden === 'apagar') console.log((await gw.apagar(cfg)) ? 'FreeLLMAPI apagado.' : rojo('No se pudo apagar FreeLLMAPI (sigue respondiendo).'));
 else if (orden === 'proveedores') await menuProveedores();
 else if (orden === 'claude' || orden === 'codex') process.exitCode = (await lanzar(orden)) ? 0 : 1;
 else if (orden) { console.log(AYUDA); process.exitCode = 1; }

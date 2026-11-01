@@ -1,6 +1,6 @@
 {
   "name": "bridge-ai",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "bridge-ai: Claude Code y Codex con modelos gratis a través de FreeLLMAPI, desde un menú en la terminal para Windows, macOS, Linux y Termux.",
   "type": "module",
   "bin": {
