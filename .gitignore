@@ -1,3 +1,6 @@
-node_modules/
+﻿node_modules/
 *.log
 .DS_Store
+package-lock.json
+*.bak
+*.before-restore
