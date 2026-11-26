@@ -4,3 +4,5 @@
 }
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.AnnotationsKt
+-dontwarn org.slf4j.**
+-dontwarn org.codehaus.mojo.animal_sniffer.*

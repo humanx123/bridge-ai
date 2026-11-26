@@ -45,9 +45,11 @@ jobs:
         run: ./gradlew :app:assembleRelease --no-daemon --stacktrace
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: bridge-ai-debug-apk
           path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: ignore
 
       - uses: actions/upload-artifact@v4
         with:
