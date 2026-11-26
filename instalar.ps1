@@ -19,4 +19,4 @@ if ($partes -notcontains $aqui) {
   Write-Host "Añadido al PATH del usuario: $aqui"
 }
 $env:Path = "$env:Path;$aqui"
-Write-Host 'Listo. Abre una ventana nueva de cmd o PowerShell y escribe:  bridge-ai' -ForegroundColor Green
+Write-Host 'Listo. Abre una ventana nueva de cmd o PowerShell y escribe:  bridge  (o: ia)' -ForegroundColor Green
