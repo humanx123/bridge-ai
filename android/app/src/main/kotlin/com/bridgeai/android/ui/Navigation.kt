@@ -9,6 +9,7 @@ import com.bridgeai.android.ui.screens.*
 
 sealed class Route(val path: String) {
     data object Home      : Route("home")
+    data object Mode      : Route("mode")
     data object Chat      : Route("chat")
     data object Config    : Route("config")
     data object Providers : Route("providers")
@@ -21,6 +22,7 @@ fun Navigation(app: BridgeAiApp) {
     val nav = rememberNavController()
     NavHost(navController = nav, startDestination = Route.Home.path) {
         composable(Route.Home.path)      { HomeScreen(onNavigate = { nav.navigate(it.path) }) }
+        composable(Route.Mode.path)      { ModeScreen(onBack = { nav.popBackStack() }, onNavigate = { nav.navigate(it.path) }) }
         composable(Route.Chat.path)      { ChatScreen(app = app, onBack = { nav.popBackStack() }) }
         composable(Route.Config.path)    { ConfigScreen(app = app, onBack = { nav.popBackStack() }) }
         composable(Route.Providers.path) { ProvidersScreen(onBack = { nav.popBackStack() }) }
