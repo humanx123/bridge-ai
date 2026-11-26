@@ -41,47 +41,112 @@ Un menú en la terminal para Windows (cmd y PowerShell), macOS, Linux y Android 
 
 ## Instalación
 
-Necesitas **[Node.js 20.18 o más nuevo](https://nodejs.org)** y **git**.
+Necesitas **[Node.js 20.18 o más nuevo](https://nodejs.org)** y **git**. Las instrucciones de abajo son paso a paso y asumen una instalación desde cero.
 
 ### Windows (cmd o PowerShell)
 
-```bat
-winget install OpenJS.NodeJS.LTS
-winget install Git.Git
-git clone https://github.com/humanx123/bridge-ai
-cd bridge-ai
-instalar.cmd
-```
-
-Abre una ventana **nueva** de cmd o PowerShell y escribe `bridge-ai`. `instalar.cmd` añade la carpeta al PATH de tu usuario. Sin instalar, también funciona con `bridge-ai.cmd` desde la carpeta.
+1. Instala Node.js LTS y git. En una terminal como administrador:
+   ```bat
+   winget install OpenJS.NodeJS.LTS
+   winget install Git.Git
+   ```
+2. Abre una terminal **nueva** (para que el PATH tome Node.js y git) y clona el repo:
+   ```bat
+   git clone https://github.com/humanx123/bridge-ai
+   cd bridge-ai
+   ```
+3. Ejecuta el instalador (doble clic o desde cmd):
+   ```bat
+   instalar.cmd
+   ```
+   Añade la carpeta del repo al PATH de tu usuario.
+4. Abre una ventana **nueva** de cmd o PowerShell y escribe:
+   ```bat
+   bridge-ai
+   ```
+   Sin instalador, también funciona con `bridge-ai.cmd` desde la carpeta del repo.
 
 ### Linux y macOS
 
-```bash
-git clone https://github.com/humanx123/bridge-ai
-cd bridge-ai
-./instalar.sh
-bridge-ai
-```
+1. Instala Node.js 20.18+ y git con tu gestor (`apt`, `dnf`, `brew`, etc.). En Debian/Ubuntu:
+   ```bash
+   sudo apt update && sudo apt install -y nodejs npm git
+   node -v   # debe ser >= v20.18
+   ```
+   Si tu distro trae Node viejo, usa [NodeSource](https://nodejs.org/en/download/package-manager) o [nvm](https://github.com/nvm-sh/nvm).
+2. Clona e instala:
+   ```bash
+   git clone https://github.com/humanx123/bridge-ai
+   cd bridge-ai
+   ./instalar.sh
+   ```
+   El script enlaza `bridge-ai` (y el atajo `ia`) en `/usr/local/bin` si tienes permiso, o en `~/.local/bin` (y lo agrega al PATH de `~/.bashrc`, `~/.zshrc` o `~/.profile`).
+3. Abre una terminal **nueva** (o `source` tu rc) y arranca:
+   ```bash
+   bridge-ai
+   ```
 
-`instalar.sh` enlaza `bridge-ai` (y el atajo `ia`) en `/usr/local/bin` o, si no hay permiso, en `~/.local/bin` (y lo añade a tu PATH).
+### Android (Termux nativo, sin PRoot)
 
-### Android (Termux)
+Probado en Termux de Google Play 2026.10.09 sobre Android 15 aarch64 con Node.js 24.17.0 y npm 11.17.0.
 
-```bash
-pkg install nodejs-lts git
-git clone https://github.com/humanx123/bridge-ai
-cd bridge-ai && ./instalar.sh
-bridge-ai
-```
+1. Instala desde Termux recién abierto:
+   ```bash
+   pkg update && pkg upgrade -y
+   pkg install -y nodejs-lts git
+   ```
+   Si prefieres Node más reciente: `pkg install -y nodejs`.
+2. Clona e instala bridge-ai:
+   ```bash
+   git clone https://github.com/humanx123/bridge-ai
+   cd bridge-ai
+   ./instalar.sh
+   ```
+   El instalador detecta `$PREFIX/bin` de Termux y enlaza ahí.
+3. Compiladores para FreeLLMAPI (la primera vez que elijas instalarlo desde el menú):
+   ```bash
+   pkg install -y python make clang
+   ```
+4. Arranca:
+   ```bash
+   bridge-ai
+   ```
 
-En Termux, compilar FreeLLMAPI puede pedir `pkg install python make clang`. Si falla, sigue la [guía de Termux de FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/install/02-android-termux.md) o usa Debian (`proot-distro`).
+**Notas de compatibilidad en Termux (importantes):**
+
+- **Claude Code**: las versiones recientes requieren binarios nativos de Linux que no son compatibles con Android/Bionic (`claude native binary not installed`). La versión **2.1.112** conserva la implementación en JavaScript puro y funciona:
+  ```bash
+  npm install -g @anthropic-ai/claude-code@2.1.112
+  claude --version
+  ```
+  Evita actualizar a versiones más nuevas si estás en Termux nativo.
+- **Codex**: el paquete oficial `@openai/codex` no provee binarios para `linux-arm64` en Termux (falla con `@openai/codex-linux-arm64` no encontrado). La alternativa comunitaria que sí funciona en ARM64 es:
+  ```bash
+  npm install -g @mmmbuto/codex-cli-termux
+  codex --version
+  ```
+  Esto **no es un paquete oficial de OpenAI**; úsalo bajo tu propio criterio.
+- Si prefieres un entorno Linux completo, instala Debian con PRoot y usa las instrucciones de Linux de arriba:
+  ```bash
+  pkg install -y proot-distro
+  proot-distro install debian
+  proot-distro login debian
+  ```
 
 ### Con npm (cualquier sistema)
 
 ```bash
 npm install -g github:humanx123/bridge-ai
 bridge-ai
+```
+
+Expone los comandos `bridge-ai` e `ia` globalmente sin tocar el PATH a mano.
+
+### Verificar la instalación
+
+```bash
+bridge-ai version    # imprime la versión del paquete
+bridge-ai estado     # muestra sistema, FreeLLMAPI y agentes detectados
 ```
 
 ## Primer uso
