@@ -1,0 +1,1 @@
+Cliente local de LLMs gratuitos vía FreeLLMAPI, estética cyberpunk tipo CLI.

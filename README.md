@@ -181,6 +181,13 @@ bridge-ai estado     # muestra sistema, FreeLLMAPI y agentes detectados
 
 La configuración guarda tu clave unificada y la sesión del panel, y solo la puede leer tu usuario. Tus claves de proveedores se quedan cifradas dentro de FreeLLMAPI.
 
+## APK para Android (beta)
+
+Cliente gráfico con estética cyberpunk azul monospace, carpeta [`android/`](android/README.md).
+Habla con tu FreeLLMAPI local (Termux o escritorio) sin tocar tu teclado. Apto para F-Droid: sin
+binarios propietarios, metadata fastlane en `es-ES` y `en-US`, `minSdk 24`. El workflow
+`.github/workflows/android.yml` produce el APK en cada push.
+
 ## Proyectos hermanos
 
 - **[laboratorio.ia](https://github.com/ReserchLab/lab-ia)**: chat, investigación científica verificada e imágenes con IA, en tu Cloudflare o en tu teléfono. [Pruébalo sin registrarte](https://lab-ia-demo.reserchlab.workers.dev).

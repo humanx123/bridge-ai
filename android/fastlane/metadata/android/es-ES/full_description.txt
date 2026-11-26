@@ -1,0 +1,21 @@
+bridge-ai es un cliente Android con estética de terminal que se conecta a un
+servidor FreeLLMAPI local — un enrutador que reúne decenas de proveedores de
+LLM gratuitos (Kilo, OVH, LLM7, Groq, Gemini, OpenRouter, Cerebras, NVIDIA…)
+detrás de una sola clave unificada.
+
+Qué hace
+• Chat contra /v1/chat/completions con respuestas en streaming.
+• Selector de modelo: elige uno o deja «auto» para que el gateway rute.
+• Gestor de proveedores: abre la página oficial para conseguir cada clave gratis.
+• Estado: ping al servidor, lista de modelos, configuración actual.
+• Local primero: por defecto se conecta a 127.0.0.1 — tus claves no salen de tu
+  teléfono.
+
+Qué no es
+• No es un servicio en la nube. Necesitas FreeLLMAPI corriendo localmente
+  (Termux, escritorio o LAN).
+• No afiliado a Anthropic, OpenAI ni a ningún proveedor.
+
+Estética: oscura cyberpunk, monocromática azul, monospace, bordes ASCII.
+
+Licencia: MIT. Incluye a FreeLLMAPI (MIT) como proyecto hermano.

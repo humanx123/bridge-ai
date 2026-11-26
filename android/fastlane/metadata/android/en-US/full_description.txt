@@ -1,0 +1,20 @@
+bridge-ai is a terminal-styled Android client that talks to a local FreeLLMAPI
+server — a router that aggregates dozens of free LLM providers (Kilo, OVH, LLM7,
+Groq, Gemini, OpenRouter, Cerebras, NVIDIA, …) behind a single unified API key.
+
+What it does
+• Chat screen talking to /v1/chat/completions with streaming responses.
+• Model picker: pick a specific model or let the gateway auto-route.
+• Provider manager: open the "get a free key" page for each provider.
+• Status page: ping the server, list available models, show config.
+• Local-first: the app connects to 127.0.0.1 (your device) by default — your
+  keys never leave your phone.
+
+What it is not
+• Not a hosted service. bridge-ai does not run its own LLM; it talks to a
+  FreeLLMAPI server you run locally (Termux, desktop, or LAN).
+• Not affiliated with Anthropic, OpenAI, or any model provider.
+
+Aesthetic: dark cyberpunk, monochrome blue, monospace, ASCII-box framing.
+
+License: MIT. Includes FreeLLMAPI (MIT) as a sibling project.

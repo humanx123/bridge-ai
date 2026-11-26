@@ -1,0 +1,1 @@
+Local gateway to free LLMs via FreeLLMAPI — cyberpunk CLI-style client.
