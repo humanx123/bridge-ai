@@ -111,7 +111,40 @@ async function lanzar(programa) {
 
 async function lanzarNormal(programa) {
   if (!(await asegurarPrograma(programa))) return;
-  await ejecutar(programa, [], { cwd: carpetaTrabajo() });
+
+  // Modo de cuenta personal: eliminar overrides de FreeLLMAPI.
+  // Se conservan PATH, HOME, proxy y el resto del entorno.
+  const env = { ...process.env };
+
+  const variablesPrivadas = programa === 'claude'
+    ? [
+        'ANTHROPIC_BASE_URL',
+        'ANTHROPIC_API_KEY',
+        'ANTHROPIC_AUTH_TOKEN',
+        'CLAUDE_CODE_USE_BEDROCK',
+        'CLAUDE_CODE_USE_VERTEX'
+      ]
+    : [
+        'OPENAI_BASE_URL',
+        'OPENAI_API_KEY',
+        'OPENAI_API_BASE',
+        'CODEX_API_KEY'
+      ];
+
+  for (const key of variablesPrivadas) {
+    delete env[key];
+  }
+
+  console.log(cian(
+    programa === 'claude'
+      ? 'Claude Code → cuenta personal de Anthropic'
+      : 'Codex → cuenta personal de OpenAI'
+  ));
+
+  await ejecutar(programa, [], {
+    cwd: carpetaTrabajo(),
+    env
+  });
 }
 
 async function elegirModelo(programa) {
