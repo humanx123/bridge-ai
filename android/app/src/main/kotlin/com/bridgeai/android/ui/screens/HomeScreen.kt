@@ -10,6 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +42,8 @@ private val CodexGreen   = Color(0xFF10A37F)
 @Composable
 fun HomeScreen(onNavigate: (Route) -> Unit) {
     val ctx = LocalContext.current
+    val app = (ctx.applicationContext as com.bridgeai.android.BridgeAiApp)
+    val settings by app.liveSettings.collectAsState()
     val termuxInstalled = remember { isPackageInstalled(ctx, "com.termux") }
     Scaffold(containerColor = BgSurface) { inner ->
         Column(
@@ -68,6 +72,17 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
 
             Spacer(Modifier.height(6.dp))
             SystemDashboard()
+
+            Spacer(Modifier.height(10.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("» WORKSPACE", color = TextMuted, fontSize = 11.sp, letterSpacing = 1.sp, modifier = Modifier.weight(1f))
+                Text(
+                    if (settings.workspace.isBlank()) "sandbox (app)" else settings.workspace,
+                    color = NeonCyan,
+                    fontSize = 11.sp,
+                    modifier = Modifier.clickable { onNavigate(Route.Config) }
+                )
+            }
 
             Spacer(Modifier.height(12.dp))
             Text("» AGENTE", color = TextMuted, fontSize = 11.sp, letterSpacing = 1.sp)

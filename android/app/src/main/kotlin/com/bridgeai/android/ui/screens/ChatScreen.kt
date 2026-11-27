@@ -53,7 +53,9 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
     val listState = rememberLazyListState()
     var sending by remember { mutableStateOf(false) }
     var terminalMode by remember { mutableStateOf(true) }
-    var cwd by remember { mutableStateOf(ctx.filesDir.absolutePath) }
+    var cwd by remember(settings.workspace) {
+        mutableStateOf(settings.workspace.ifBlank { ctx.filesDir.absolutePath })
+    }
 
     val launchCmd = remember(settings, Selection.agent, Selection.mode) {
         buildLaunchCmd(settings.baseUrl, settings.apiKey, settings.model)

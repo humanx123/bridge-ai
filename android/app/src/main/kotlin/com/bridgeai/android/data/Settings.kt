@@ -13,13 +13,15 @@ object SettingsKeys {
     val API_KEY       = stringPreferencesKey("api_key")
     val DEFAULT_MODEL = stringPreferencesKey("default_model")
     val TEMPERATURE   = stringPreferencesKey("temperature")
+    val WORKSPACE     = stringPreferencesKey("workspace")
 }
 
 data class BridgeSettings(
     val baseUrl: String      = "http://127.0.0.1:31415",
     val apiKey:  String      = "",
     val model:   String      = "auto",
-    val temperature: Double? = null
+    val temperature: Double? = null,
+    val workspace: String    = ""
 )
 
 class SettingsRepository(private val context: Context) {
@@ -29,7 +31,8 @@ class SettingsRepository(private val context: Context) {
             baseUrl = p[SettingsKeys.BASE_URL] ?: "http://127.0.0.1:31415",
             apiKey  = p[SettingsKeys.API_KEY]  ?: "",
             model   = p[SettingsKeys.DEFAULT_MODEL] ?: "auto",
-            temperature = p[SettingsKeys.TEMPERATURE]?.toDoubleOrNull()
+            temperature = p[SettingsKeys.TEMPERATURE]?.toDoubleOrNull(),
+            workspace = p[SettingsKeys.WORKSPACE] ?: ""
         )
     }
 
@@ -39,11 +42,13 @@ class SettingsRepository(private val context: Context) {
                 baseUrl = prefs[SettingsKeys.BASE_URL] ?: "http://127.0.0.1:31415",
                 apiKey  = prefs[SettingsKeys.API_KEY]  ?: "",
                 model   = prefs[SettingsKeys.DEFAULT_MODEL] ?: "auto",
-                temperature = prefs[SettingsKeys.TEMPERATURE]?.toDoubleOrNull()
+                temperature = prefs[SettingsKeys.TEMPERATURE]?.toDoubleOrNull(),
+                workspace = prefs[SettingsKeys.WORKSPACE] ?: ""
             ).block()
             prefs[SettingsKeys.BASE_URL] = current.baseUrl
             prefs[SettingsKeys.API_KEY]  = current.apiKey
             prefs[SettingsKeys.DEFAULT_MODEL] = current.model
+            prefs[SettingsKeys.WORKSPACE] = current.workspace
             current.temperature?.let { prefs[SettingsKeys.TEMPERATURE] = it.toString() }
                 ?: prefs.remove(SettingsKeys.TEMPERATURE)
         }

@@ -23,6 +23,7 @@ fun ConfigScreen(app: BridgeAiApp, onBack: () -> Unit) {
     var baseUrl by remember(settings) { mutableStateOf(settings.baseUrl) }
     var apiKey  by remember(settings) { mutableStateOf(settings.apiKey) }
     var model   by remember(settings) { mutableStateOf(settings.model) }
+    var workspace by remember(settings) { mutableStateOf(settings.workspace) }
 
     Scaffold(
         containerColor = BgSurface,
@@ -85,10 +86,26 @@ fun ConfigScreen(app: BridgeAiApp, onBack: () -> Unit) {
                 }
             }
 
+            CyberBox(title = "workspace") {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("Ruta de tu proyecto (ej.: /sdcard/mis-repos/app)", color = TextMuted, style = MaterialTheme.typography.labelMedium)
+                    OutlinedTextField(
+                        value = workspace,
+                        onValueChange = { workspace = it },
+                        singleLine = true,
+                        placeholder = { Text("(vacío = sandbox de la app)", color = TextDim) },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = textFieldColors()
+                    )
+                    Text("Se usa como directorio de trabajo en el chat/terminal y como cwd del CLI.",
+                        color = TextDim, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+
             Button(
                 onClick = {
                     scope.launch {
-                        app.settings.update { copy(baseUrl = baseUrl.trim(), apiKey = apiKey.trim(), model = model.trim().ifBlank { "auto" }) }
+                        app.settings.update { copy(baseUrl = baseUrl.trim(), apiKey = apiKey.trim(), model = model.trim().ifBlank { "auto" }, workspace = workspace.trim()) }
                         onBack()
                     }
                 },
