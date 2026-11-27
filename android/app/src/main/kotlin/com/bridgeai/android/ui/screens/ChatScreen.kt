@@ -55,7 +55,7 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
     var cwd by remember { mutableStateOf(ctx.filesDir.absolutePath) }
 
     val launchCmd = remember(settings, Selection.agent, Selection.mode) {
-        buildLaunchCmd(settings.baseUrl, settings.fkey, settings.model)
+        buildLaunchCmd(settings.baseUrl, settings.apiKey, settings.model)
     }
 
     LaunchedEffect(Unit) {
