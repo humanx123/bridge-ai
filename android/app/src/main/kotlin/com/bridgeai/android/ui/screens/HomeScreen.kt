@@ -19,6 +19,13 @@ import androidx.compose.ui.unit.sp
 import com.bridgeai.android.ui.Route
 import com.bridgeai.android.ui.Selection
 import com.bridgeai.android.ui.components.StatusDot
+import com.bridgeai.android.ui.components.SystemDashboard
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
 import com.bridgeai.android.ui.theme.BgDeep
 import com.bridgeai.android.ui.theme.BgSurface
 import com.bridgeai.android.ui.theme.BorderLine
@@ -31,6 +38,8 @@ private val CodexGreen   = Color(0xFF10A37F)
 
 @Composable
 fun HomeScreen(onNavigate: (Route) -> Unit) {
+    val ctx = LocalContext.current
+    val termuxInstalled = remember { isPackageInstalled(ctx, "com.termux") }
     Scaffold(containerColor = BgSurface) { inner ->
         Column(
             Modifier
@@ -51,10 +60,13 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
             }
             Spacer(Modifier.height(4.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatusDot(ok = true,  label = "FreeLLMAPI")
-                StatusDot(ok = false, label = "proveedores")
-                StatusDot(ok = true,  label = "red local")
+                StatusDot(ok = true,            label = "FreeLLMAPI")
+                StatusDot(ok = termuxInstalled, label = "Termux")
+                StatusDot(ok = true,            label = "red")
             }
+
+            Spacer(Modifier.height(6.dp))
+            SystemDashboard()
 
             Spacer(Modifier.height(12.dp))
             Text("» AGENTE", color = TextMuted, fontSize = 11.sp, letterSpacing = 1.sp)
@@ -95,7 +107,31 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
                 ShortcutButton("acerca",      Modifier.weight(1f)) { onNavigate(Route.About) }
             }
 
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(18.dp))
+            Text("» LABORATORIO (requiere Termux)", color = TextMuted, fontSize = 11.sp, letterSpacing = 1.sp)
+            if (!termuxInstalled) {
+                Text(
+                    "Termux no está instalado. Instálalo desde F-Droid para usar los CLIs reales y distros.",
+                    color = TextMuted,
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    ShortcutButton("instalar Termux (F-Droid)", Modifier.weight(1f)) { openUrl(ctx, "https://f-droid.org/packages/com.termux/") }
+                }
+            } else {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    ShortcutButton("Debian",  Modifier.weight(1f)) { runInTermux(ctx, "pkg install -y proot-distro && proot-distro install debian && proot-distro login debian") }
+                    ShortcutButton("Ubuntu",  Modifier.weight(1f)) { runInTermux(ctx, "pkg install -y proot-distro && proot-distro install ubuntu && proot-distro login ubuntu") }
+                    ShortcutButton("Alpine",  Modifier.weight(1f)) { runInTermux(ctx, "pkg install -y proot-distro && proot-distro install alpine && proot-distro login alpine") }
+                }
+                Text(
+                    "Alpine es la más liviana (~50 MB); Debian/Ubuntu dan entorno completo (~500 MB).",
+                    color = TextMuted,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
+            Spacer(Modifier.height(16.dp))
             Text(
                 "FreeLLMAPI corre en tu dispositivo (127.0.0.1). Modo clásico usa tu cuenta Anthropic u OpenAI.",
                 color = TextMuted,
@@ -127,6 +163,27 @@ private fun AgentCard(
         Text(name, color = TextPrimary, fontSize = 16.sp, letterSpacing = 1.sp)
         Text(sub, color = TextMuted, fontSize = 10.sp)
     }
+}
+
+private fun isPackageInstalled(ctx: Context, pkg: String): Boolean = try {
+    ctx.packageManager.getPackageInfo(pkg, 0); true
+} catch (_: Exception) { false }
+
+private fun openUrl(ctx: Context, url: String) {
+    try {
+        val i = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        ctx.startActivity(i)
+    } catch (_: Exception) {}
+}
+
+private fun runInTermux(ctx: Context, cmd: String) {
+    val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    cb.setPrimaryClip(ClipData.newPlainText("bridge-ai cmd", cmd))
+    Toast.makeText(ctx, "comando copiado · pégalo en Termux", Toast.LENGTH_LONG).show()
+    val i = ctx.packageManager.getLaunchIntentForPackage("com.termux")
+    i?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    try { i?.let { ctx.startActivity(it) } } catch (_: Exception) {}
 }
 
 @Composable
