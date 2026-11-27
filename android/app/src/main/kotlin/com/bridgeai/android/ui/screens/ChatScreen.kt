@@ -63,8 +63,8 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
             lines += Line(Line.Kind.Info, "bridge-ai terminal · sandbox: ${ctx.filesDir.absolutePath}")
             lines += Line(Line.Kind.Info, "═══════════════════════════════════════════")
             lines += Line(Line.Kind.Info, "agente: ${Selection.agent} · modo: ${Selection.mode}")
-            lines += Line(Line.Kind.Info, "para abrir el CLI real en Termux → botón [▶ CLI]")
-            lines += Line(Line.Kind.Info, "comando que se lanzaría:")
+            lines += Line(Line.Kind.Info, "pulsa [▶ CLI] → abre Termux y pega. La primera vez descarga claude/codex solo.")
+            lines += Line(Line.Kind.Info, "comando (instala si falta + ejecuta):")
             lines += Line(Line.Kind.Stdout, "  " + launchCmd)
             lines += Line(Line.Kind.Info, "───────────────────────────────────────────")
             lines += Line(Line.Kind.Info, "comandos: ls, pwd  ·  /chat ...  ·  /termux <cmd>  ·  /cli (abre en Termux)  ·  /clear")
@@ -279,15 +279,19 @@ private fun buildLaunchCmd(baseUrl: String, fkey: String, model: String): String
     val agent = Selection.agent
     val mode  = Selection.mode
     val modelArg = if (model.isNotBlank() && model != "auto") model else "auto"
+    val installClaude = "command -v claude >/dev/null || { pkg install -y nodejs-lts && npm install -g @anthropic-ai/claude-code@2.1.112; }"
+    val installCodex  = "command -v codex  >/dev/null || { pkg install -y nodejs-lts && npm install -g @mmmbuto/codex-cli-termux; }"
+    val url   = baseUrl.ifBlank { "http://127.0.0.1:31415" }
+    val fk    = fkey.ifBlank { "<tu-clave-freellmapi>" }
     return when {
         agent == Selection.Agent.Claude && mode == Selection.Mode.Free ->
-            "ANTHROPIC_BASE_URL='$baseUrl' ANTHROPIC_AUTH_TOKEN='${fkey.ifBlank{"<tu-clave-freellmapi>"}}' claude --model '$modelArg'"
+            "$installClaude && ANTHROPIC_BASE_URL='$url' ANTHROPIC_AUTH_TOKEN='$fk' claude --model '$modelArg'"
         agent == Selection.Agent.Claude && mode == Selection.Mode.Classic ->
-            "ANTHROPIC_API_KEY='<tu-clave-anthropic>' claude"
+            "$installClaude && ANTHROPIC_API_KEY='<tu-clave-anthropic>' claude"
         agent == Selection.Agent.Codex && mode == Selection.Mode.Free ->
-            "OPENAI_BASE_URL='${baseUrl.trimEnd('/')}/v1' OPENAI_API_KEY='${fkey.ifBlank{"<tu-clave-freellmapi>"}}' codex"
+            "$installCodex && OPENAI_BASE_URL='${url.trimEnd('/')}/v1' OPENAI_API_KEY='$fk' codex"
         agent == Selection.Agent.Codex && mode == Selection.Mode.Classic ->
-            "OPENAI_API_KEY='<tu-clave-openai>' codex"
+            "$installCodex && OPENAI_API_KEY='<tu-clave-openai>' codex"
         else -> "bridge-ai"
     }
 }
