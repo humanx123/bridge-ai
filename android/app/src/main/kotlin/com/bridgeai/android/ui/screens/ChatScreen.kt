@@ -118,7 +118,12 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
             )
         }
     ) { inner ->
-        Column(Modifier.padding(inner).fillMaxSize()) {
+        Column(
+            Modifier
+                .padding(inner)
+                .fillMaxSize()
+                .imePadding()
+        ) {
             SelectionContainer(
                 modifier = Modifier.weight(1f).fillMaxWidth()
             ) {
