@@ -28,9 +28,9 @@ class FreeLlmApiClient(
     private val http = HttpClient(OkHttp) {
         install(ContentNegotiation) { json(json) }
         install(HttpTimeout) {
-            requestTimeoutMillis = 120_000
-            connectTimeoutMillis = 10_000
-            socketTimeoutMillis  = 120_000
+            requestTimeoutMillis = 180_000
+            connectTimeoutMillis = 30_000
+            socketTimeoutMillis  = 180_000
         }
         install(Logging) { level = LogLevel.INFO }
         expectSuccess = false

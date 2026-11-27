@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- FreeLLMAPI runs on loopback only; cleartext allowed for localhost. -->
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">127.0.0.1</domain>
-        <domain includeSubdomains="true">localhost</domain>
-        <domain includeSubdomains="true">10.0.2.2</domain>
-    </domain-config>
-    <base-config cleartextTrafficPermitted="false">
+    <!--
+      Cleartext permitido en cualquier host para que el usuario pueda apuntar a:
+        - FreeLLMAPI local en loopback (Wi-Fi o datos móviles, da igual)
+        - FreeLLMAPI en LAN (otra IP privada)
+        - Un túnel http (ngrok, cloudflared, Tailscale)
+      HTTPS siempre funciona para api.anthropic.com, api.openai.com, etc.
+      El usuario es responsable de la URL que configura.
+    -->
+    <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
