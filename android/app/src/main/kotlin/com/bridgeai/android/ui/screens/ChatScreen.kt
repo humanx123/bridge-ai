@@ -1,6 +1,10 @@
 package com.bridgeai.android.ui.screens
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,10 +54,20 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
     var terminalMode by remember { mutableStateOf(true) }
     var cwd by remember { mutableStateOf(ctx.filesDir.absolutePath) }
 
+    val launchCmd = remember(settings, Selection.agent, Selection.mode) {
+        buildLaunchCmd(settings.baseUrl, settings.fkey, settings.model)
+    }
+
     LaunchedEffect(Unit) {
         if (lines.isEmpty()) {
             lines += Line(Line.Kind.Info, "bridge-ai terminal · sandbox: ${ctx.filesDir.absolutePath}")
-            lines += Line(Line.Kind.Info, "escribe un comando (ls, pwd, uname -a) · '/chat ...' para IA · '/termux <cmd>' para delegar a Termux")
+            lines += Line(Line.Kind.Info, "═══════════════════════════════════════════")
+            lines += Line(Line.Kind.Info, "agente: ${Selection.agent} · modo: ${Selection.mode}")
+            lines += Line(Line.Kind.Info, "para abrir el CLI real en Termux → botón [▶ CLI]")
+            lines += Line(Line.Kind.Info, "comando que se lanzaría:")
+            lines += Line(Line.Kind.Stdout, "  " + launchCmd)
+            lines += Line(Line.Kind.Info, "───────────────────────────────────────────")
+            lines += Line(Line.Kind.Info, "comandos: ls, pwd  ·  /chat ...  ·  /termux <cmd>  ·  /cli (abre en Termux)  ·  /clear")
         }
     }
 
@@ -86,6 +100,9 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
                     }
                 },
                 actions = {
+                    TextButton(onClick = { openCli(ctx, launchCmd) { msg -> lines += Line(Line.Kind.Info, msg) } }) {
+                        Text("[▶ CLI]", color = NeonCyan, fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+                    }
                     TextButton(onClick = { terminalMode = !terminalMode }) {
                         Text(
                             if (terminalMode) "[term]" else "[chat]",
@@ -186,12 +203,14 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
                             raw.startsWith("/chat ")   -> "chat"   to raw.removePrefix("/chat ").trim()
                             raw.startsWith("/termux ") -> "termux" to raw.removePrefix("/termux ").trim()
                             raw == "/clear"            -> "clear"  to ""
+                            raw == "/cli"              -> "cli"    to ""
                             terminalMode               -> "shell"  to raw
                             else                       -> "chat"   to raw
                         }
 
                         when (action) {
                             "clear" -> { lines.clear() }
+                            "cli" -> { openCli(ctx, launchCmd) { msg -> lines += Line(Line.Kind.Info, msg) } }
                             "termux" -> {
                                 lines += Line(Line.Kind.Prompt, "termux$ $payload")
                                 try {
@@ -253,6 +272,42 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+private fun buildLaunchCmd(baseUrl: String, fkey: String, model: String): String {
+    val agent = Selection.agent
+    val mode  = Selection.mode
+    val modelArg = if (model.isNotBlank() && model != "auto") model else "auto"
+    return when {
+        agent == Selection.Agent.Claude && mode == Selection.Mode.Free ->
+            "ANTHROPIC_BASE_URL='$baseUrl' ANTHROPIC_AUTH_TOKEN='${fkey.ifBlank{"<tu-clave-freellmapi>"}}' claude --model '$modelArg'"
+        agent == Selection.Agent.Claude && mode == Selection.Mode.Classic ->
+            "ANTHROPIC_API_KEY='<tu-clave-anthropic>' claude"
+        agent == Selection.Agent.Codex && mode == Selection.Mode.Free ->
+            "OPENAI_BASE_URL='${baseUrl.trimEnd('/')}/v1' OPENAI_API_KEY='${fkey.ifBlank{"<tu-clave-freellmapi>"}}' codex"
+        agent == Selection.Agent.Codex && mode == Selection.Mode.Classic ->
+            "OPENAI_API_KEY='<tu-clave-openai>' codex"
+        else -> "bridge-ai"
+    }
+}
+
+private fun openCli(ctx: Context, cmd: String, log: (String) -> Unit) {
+    val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    cb.setPrimaryClip(ClipData.newPlainText("bridge-ai cli", cmd))
+    log("comando copiado al portapapeles")
+    val termux = ctx.packageManager.getLaunchIntentForPackage("com.termux")
+    if (termux != null) {
+        termux.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        ctx.startActivity(termux)
+        log("abriendo Termux → pega (long-press) y pulsa enter")
+    } else {
+        log("Termux no está instalado. Install: F-Droid → Termux")
+        try {
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/packages/com.termux/"))
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            ctx.startActivity(i)
+        } catch (_: Exception) {}
     }
 }
 
