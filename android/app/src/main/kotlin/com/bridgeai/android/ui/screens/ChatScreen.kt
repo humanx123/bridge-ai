@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Send
@@ -68,6 +69,7 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
             lines += Line(Line.Kind.Stdout, "  " + launchCmd)
             lines += Line(Line.Kind.Info, "───────────────────────────────────────────")
             lines += Line(Line.Kind.Info, "comandos: ls, pwd  ·  /chat ...  ·  /termux <cmd>  ·  /cli (abre en Termux)  ·  /clear")
+            lines += Line(Line.Kind.Info, "mantén pulsado el texto para seleccionar · copia/pega nativo")
         }
     }
 
@@ -117,11 +119,13 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
         }
     ) { inner ->
         Column(Modifier.padding(inner).fillMaxSize()) {
+            SelectionContainer(
+                modifier = Modifier.weight(1f).fillMaxWidth()
+            ) {
             LazyColumn(
                 state = listState,
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .background(BgDeep)
                     .padding(horizontal = 10.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -153,6 +157,7 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
                     )
                 }
             }
+            }
 
             Row(
                 Modifier.fillMaxWidth().background(BgSurface).padding(horizontal = 10.dp, vertical = 8.dp),
@@ -181,8 +186,9 @@ fun ChatScreen(app: BridgeAiApp, onBack: () -> Unit) {
                         fontFamily = FontFamily.Monospace,
                         fontSize = 13.sp
                     ),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
+                    singleLine = false,
+                    maxLines = 5,
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NeonCyan,
                         unfocusedBorderColor = BorderLine,
